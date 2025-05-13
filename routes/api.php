@@ -1,7 +1,8 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ProductCategoryController;
 use App\Http\Controllers\API\ProductController;
-use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  * DELETE /PRODUCTS/:ID
  */
 
-Route::apiResource('products', ProductController::class);
+Route::apiResource('products', ProductController::class)
+    ->only('index', 'show');
+    
+Route::apiResource('products.categories', ProductCategoryController::class)
+    ->only('index');
+
+Route::apiResource('products', ProductController::class)
+    ->only(['store', 'update', 'destroy'])
+    ->middleware('auth:sanctum');
+
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 // Route::controller(ProductController::class)
 // ->prefix('products')

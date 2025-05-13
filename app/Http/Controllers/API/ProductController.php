@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductCollection;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -20,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return $this->product->all();
+        return new ProductCollection($this->product->paginate(10));
     }
 
     /**
@@ -31,6 +33,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if(!$request->user()->tokenCan('store')) \abort(401, 'Unauthorized...');
+        
         return Product::create($request->all());
         
     }
@@ -43,7 +47,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return $product;
+        return new ProductResource($product);
     }
 
     /**
@@ -55,6 +59,8 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        if(!$request->user()->tokenCan('update')) \abort(401, 'Unauthorized...');
+
         $product->update($request->all());
 
         return $product;
