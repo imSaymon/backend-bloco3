@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\ProductPutRequest;
+use App\Http\Requests\API\ProductStoreRequest;
 use App\Http\Resources\ProductCollection;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
@@ -31,11 +33,11 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductStoreRequest $request)
     {
         if(!$request->user()->tokenCan('store')) \abort(401, 'Unauthorized...');
         
-        return Product::create($request->all());
+        return new ProductResource(Product::create($request->all()));
         
     }
 
@@ -47,6 +49,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        // $product = $this->product->find($product);
+        // if(!$product) \abort(404, "Produto não encontrado - ABORT");
+
+        //Colocar o ->load('categories') após product
         return new ProductResource($product);
     }
 
@@ -57,13 +63,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductPutRequest $request, Product $product)
     {
         if(!$request->user()->tokenCan('update')) \abort(401, 'Unauthorized...');
 
         $product->update($request->all());
 
-        return $product;
+        return new ProductResource($product);
     }
 
     /**
@@ -76,6 +82,6 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        return $product->name;
+        return response()->json([], 204);
     }
 }

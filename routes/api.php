@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProductCategoryController;
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\ProductPhotosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,10 @@ Route::apiResource('products', ProductController::class)
     
 Route::apiResource('products.categories', ProductCategoryController::class)
     ->only('index');
+
+Route::apiResource('products.photos', ProductPhotosController::class)
+    ->only('index', 'store', 'destroy')
+    ->middleware('auth:sanctum');
 
 Route::apiResource('products', ProductController::class)
     ->only(['store', 'update', 'destroy'])
