@@ -30,8 +30,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  * DELETE /PRODUCTS/:ID
  */
 
-Route::apiResource('products', ProductController::class)
-    ->only('index', 'show');
     
 Route::apiResource('products.categories', ProductCategoryController::class)
     ->only('index');
@@ -41,7 +39,6 @@ Route::apiResource('products.photos', ProductPhotosController::class)
     ->middleware('auth:sanctum');
 
 Route::apiResource('products', ProductController::class)
-    ->only(['store', 'update', 'destroy'])
     ->middleware('auth:sanctum');
 
 

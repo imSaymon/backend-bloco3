@@ -16,9 +16,11 @@ class ProductControllerTest extends TestCase
 
     public function test_should_product_get_endpoint_list_all_products()
     {
+        $token = $this->makeUserToken();
+
         Product::factory(3)->create();
 
-        $response = $this->getJson('/api/products');
+        $response = $this->getJson('/api/products', ['Authorization' => 'Bearer ' . $token]);
 
         $response
             ->assertStatus(200);
@@ -38,9 +40,11 @@ class ProductControllerTest extends TestCase
 
     public function test_should_product_get_endpoint_list_all_products_paginated()
     {
+        $token = $this->makeUserToken();
+
         Product::factory(20)->create();
 
-        $response = $this->getJson('/api/products');
+        $response = $this->getJson('/api/products', ['Authorization' => 'Bearer ' . $token]);
 
             $response
                 ->assertStatus(200);
@@ -64,9 +68,11 @@ class ProductControllerTest extends TestCase
 
     public function test_should_product_get_endpoint_returns_a_single_product()
     {
+        $token = $this->makeUserToken();
+
         Product::factory(1)->create(['name' => 'produto 1', 'price' => 3999]);
 
-        $response = $this->getJson('/api/products/1');
+        $response = $this->getJson('/api/products/1', ['Authorization' => 'Bearer ' . $token]);
 
         $response
             ->assertStatus(200);
