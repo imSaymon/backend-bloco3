@@ -23,7 +23,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return new ProductCollection($this->product->paginate(40));
+        return new ProductCollection($this->product->paginate(10));
     }
 
     /**
@@ -52,7 +52,7 @@ class ProductController extends Controller
         // if(!$product) \abort(404, "Produto não encontrado - ABORT");
 
         //Colocar o ->load('categories') após product
-        return new ProductResource($product);
+        return new ProductResource($product->load('categories'));
     }
 
     /**

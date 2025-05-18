@@ -5,7 +5,6 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\ProductPhotosStoreRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductPhotosController extends Controller
@@ -31,8 +30,9 @@ class ProductPhotosController extends Controller
     public function destroy(Product $product, $photo)
     {
         $productPhoto = $product->photos()->find($photo);
+
         if(Storage::disk('public')->exists($productPhoto->photo))
-        Storage::disk('public')->delete($productPhoto->photo);
+            Storage::disk('public')->delete($productPhoto->photo);
 
     $productPhoto->delete();
 
