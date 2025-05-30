@@ -34,10 +34,9 @@ class ProductController extends Controller
      */
     public function store(ProductStoreRequest $request)
     {
-        if(!$request->user()->tokenCan('store')) \abort(401, 'Unauthorized...');
-        
+        if (!$request->user()->tokenCan('store')) \abort(401, 'Unauthorized...');
+
         return new ProductResource(Product::create($request->all()));
-        
     }
 
     /**
@@ -64,7 +63,7 @@ class ProductController extends Controller
      */
     public function update(ProductPutRequest $request, Product $product)
     {
-        if(!$request->user()->tokenCan('update')) \abort(401, 'Unauthorized...');
+        if (!$request->user()->tokenCan('update')) \abort(401, 'Unauthorized...');
 
         $product->update($request->all());
 

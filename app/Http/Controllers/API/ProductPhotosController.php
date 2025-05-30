@@ -21,7 +21,7 @@ class ProductPhotosController extends Controller
         $photos = [];
 
         foreach ($files as $file) {
-            $photos [] = ['photo' => $file->store('products', 'public')];
+            $photos[] = ['photo' => $file->store('products', 'public')];
         }
 
         $product->photos()->createMany($photos);
@@ -31,11 +31,11 @@ class ProductPhotosController extends Controller
     {
         $productPhoto = $product->photos()->find($photo);
 
-        if(Storage::disk('public')->exists($productPhoto->photo))
+        if (Storage::disk('public')->exists($productPhoto->photo))
             Storage::disk('public')->delete($productPhoto->photo);
 
-    $productPhoto->delete();
+        $productPhoto->delete();
 
-    return response()->json([], 204);
+        return response()->json([], 204);
     }
 }
